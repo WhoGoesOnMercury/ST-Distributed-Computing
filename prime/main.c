@@ -6,7 +6,7 @@ int main() {
 
     PRIME_THREAD *thread_data = malloc(config.thread_count * sizeof(PRIME_THREAD));
 
-    int base_int = 0, remainder = 0;
+    uint64_t base_int = 0, remainder = 0;
 
     base_int = config.MAX_INT_VAL / config.thread_count;
     remainder = config.MAX_INT_VAL % config.thread_count;

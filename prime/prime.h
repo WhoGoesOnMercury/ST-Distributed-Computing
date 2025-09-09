@@ -7,14 +7,14 @@
 
 typedef struct CONFIG {
     uint64_t    MAX_INT_VAL;
-    int         thread_count;
+    uint64_t    thread_count;
 } CONFIG;
 
 typedef struct PRIME_THREAD {
     pthread_t   thread;
     int         id;
-    int         lower_bound;
-    int         upper_bound;
+    uint64_t    lower_bound;
+    uint64_t    upper_bound;
 } PRIME_THREAD;
 
 CONFIG read_file() {
@@ -38,9 +38,10 @@ CONFIG read_file() {
 
 void *prime_thread(void *arg) {
     PRIME_THREAD *pt = (PRIME_THREAD *)arg;
-    int id = pt->id, lower_bound = pt->lower_bound, upper_bound = pt->upper_bound;
+    int id = pt->id;
+    uint64_t lower_bound = pt->lower_bound, upper_bound = pt->upper_bound;
 
-    for (int num = lower_bound; num <= upper_bound; num++) {
+    for (uint64_t num = lower_bound; num <= upper_bound; num++) {
         if (num < 2) continue; 
 
         int is_prime = 1;
@@ -52,7 +53,7 @@ void *prime_thread(void *arg) {
         }
 
         if (is_prime) {
-            printf("Thread %d: %d is prime.\n", id, num);
+            printf("Thread %d: %llu is prime.\n", id, num);
         }
         Sleep(10 * id);
     }
