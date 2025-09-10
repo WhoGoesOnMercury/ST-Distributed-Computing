@@ -11,7 +11,7 @@ int main() {
     base_int = config.MAX_INT_VAL / config.thread_count;
     remainder = config.MAX_INT_VAL % config.thread_count;
 
-    for(int index = 0; index < config.thread_count; index++) {
+    for(uint64_t index = 0; index < config.thread_count; index++) {
         thread_data[index].id = index;
         if(index == 0) {
             thread_data[index].lower_bound = 0;

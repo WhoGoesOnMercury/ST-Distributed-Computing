@@ -33,6 +33,8 @@ CONFIG read_file() {
 
     config_data.thread_count = count;
 
+    fclose(fptr);
+
     return config_data;
 }
 
