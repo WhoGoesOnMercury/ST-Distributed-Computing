@@ -4,6 +4,7 @@
 #include <math.h>
 #include <time.h>
 #include <windows.h>
+#include <string.h>
 
 typedef struct CONFIG {
     uint64_t    MAX_INT_VAL;
@@ -38,6 +39,33 @@ CONFIG read_file() {
     return config_data;
 }
 
+void clear_file(int core_count) {
+    char filename[32];
+    FILE *fptr;
+
+    for(int id = 0; id < core_count; id++) { 
+        snprintf(filename, sizeof(filename), "thread_outputs/Thread_%d.txt", id);
+        fptr = fopen(filename, "w");  
+        if (fptr) { fclose(fptr); }
+    }
+}
+
+void write_to_file(int id, int prime_no) {
+    char filename[32];  
+
+    snprintf(filename, sizeof(filename), "thread_outputs/Thread_%d.txt", id);
+
+    FILE *fptr = fopen(filename, "a");
+    if (fptr == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    fprintf(fptr, "Checked: %d\n", prime_no);
+
+    fclose(fptr);
+}
+
 void *prime_thread(void *arg) {
     PRIME_THREAD *pt = (PRIME_THREAD *)arg;
     int id = pt->id;
@@ -56,8 +84,9 @@ void *prime_thread(void *arg) {
 
         if (is_prime) {
             printf("Thread %d: %llu is prime.\n", id, num);
+            write_to_file(id, num);
         }
-        Sleep(10 * id);
+        //Sleep(10 * id);
     }
 
     return NULL;

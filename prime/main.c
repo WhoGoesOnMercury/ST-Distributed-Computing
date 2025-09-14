@@ -4,6 +4,8 @@ int main() {
     CONFIG config;
     config = read_file();
 
+    clear_file(config.thread_count);
+
     PRIME_THREAD *thread_data = malloc(config.thread_count * sizeof(PRIME_THREAD));
 
     uint64_t base_int = 0, remainder = 0;
