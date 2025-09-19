@@ -33,6 +33,13 @@ int main() {
         }
     }
 
+    if(config.print_mode == 0) { printf("\nPrint mode: Instant\n"); } 
+    else printf("\nPrint mode: After all threads are done\n");
+
+    if(config.division_mode == 0) { printf("Task Division scheme: Divided search range\n\n"); }
+    else printf("Task Division scheme: Linear and individual\n\n");
+
+
     for (int t = 0; t < config.thread_count; t++) {
         pthread_create(&thread_data[t].thread, NULL, prime_thread, &thread_data[t]);
     }

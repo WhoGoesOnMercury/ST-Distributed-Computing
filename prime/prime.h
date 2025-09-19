@@ -10,8 +10,8 @@
 typedef struct CONFIG {
     uint64_t    MAX_INT_VAL;
     int         thread_count;
-    int         print_mode;   // 0 (print immediately) or 1 (wait until all is finished)
-    int         division_mode; // 0 (straight division) or 1 (cooperative division)
+    int         print_mode;         // 0 (print immediately) or 1 (wait until all is finished)
+    int         division_mode;      // 0 (straight division) or 1 (cooperative division)
 } CONFIG;
 
 typedef struct PRIME_THREAD {
@@ -20,6 +20,13 @@ typedef struct PRIME_THREAD {
     uint64_t    lower_bound;
     uint64_t    upper_bound;
 } PRIME_THREAD;
+
+typedef struct {
+    uint64_t num;
+    uint64_t start;
+    uint64_t end;
+    int result;                     // 1 = no divisor found or 0 = divisor found
+} DIV_THREAD;
 
 typedef struct RESULT {
     int thread_id;
@@ -114,6 +121,47 @@ void write_to_file(int mode, uint64_t lower_bound, uint64_t upper_bound,
     fclose(fptr);
 }
 
+void *div_check(void *arg) {
+    DIV_THREAD *dt = (DIV_THREAD *)arg;
+    dt->result = 1;
+
+    for (uint64_t d = dt->start; d <= dt->end; d++) {
+        if (dt->num % d == 0) {
+            dt->result = 0;
+            break;
+        }
+    }
+
+    return NULL;
+}
+
+int is_prime_parallel(uint64_t num, int num_threads) {
+    if (num < 2) return 0;
+    if (num == 2 || num == 3) return 1;
+
+    uint64_t limit = (uint64_t)sqrt((long double)num);
+    pthread_t threads[num_threads];
+    DIV_THREAD tasks[num_threads];
+
+    uint64_t range = limit / num_threads;
+    for (int i = 0; i < num_threads; i++) {
+        tasks[i].num = num;
+        tasks[i].start = i * range + 2;
+        tasks[i].end = (i == num_threads - 1) ? limit : (i + 1) * range + 1;
+        pthread_create(&threads[i], NULL, div_check, &tasks[i]);
+    }
+
+    int prime = 1;
+    for (int i = 0; i < num_threads; i++) {
+        pthread_join(threads[i], NULL);
+        if (tasks[i].result == 0) {
+            prime = 0;
+        }
+    }
+
+    return prime;
+}
+
 void *prime_thread(void *arg) {
     PRIME_THREAD *pt = (PRIME_THREAD *)arg;
     int id = pt->id;
@@ -127,11 +175,15 @@ void *prime_thread(void *arg) {
         if (num < 2) continue; 
 
         int is_prime = 1;
-        for (uint64_t check = 2; check <= (uint64_t)sqrt((long double)num); check++) {
-            if (num % check == 0) {
-                is_prime = 0;
-                break;
+        if(config.division_mode == 0) {
+            for (uint64_t check = 2; check <= (uint64_t)sqrt((long double)num); check++) {
+                if (num % check == 0) {
+                    is_prime = 0;
+                    break;
+                }
             }
+        } else {
+            is_prime = is_prime_parallel(num, config.thread_count);
         }
 
         if (is_prime) {
@@ -156,3 +208,5 @@ void *prime_thread(void *arg) {
 
     return NULL;
 }
+
+
