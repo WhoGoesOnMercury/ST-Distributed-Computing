@@ -14,12 +14,17 @@ typedef struct CONFIG {
     int         dps_count;
     int         time_min;
     int         time_max;
+    int         party_count;
 } CONFIG;
 
 typedef struct INSTANCE {
     pthread_t   thread;
     int         id;
-    bool        is_active;
+    bool        is_party_complete;
+    int         time_min;
+    int         time_max;
+    int         *player_ids;
+
 } INSTANCE;
 
 typedef struct PLAYER {
@@ -113,4 +118,17 @@ CONFIG read_config() {
     config_data.time_max = tmax;
 
     return config_data;
+}
+
+void *instance_thread(void *arg) {
+
+    if(is_party_complete == 1) {
+
+    } else {
+
+    }
+
+    // Search again for players
+
+    return NULL;
 }

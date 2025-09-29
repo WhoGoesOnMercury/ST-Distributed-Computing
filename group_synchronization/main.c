@@ -9,6 +9,8 @@ int main() {
         config = read_config();
     }
 
+    
+
     /*
         thread instances run main loop
         loop searches for players
