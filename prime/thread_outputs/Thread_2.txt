@@ -1,4 +1,4 @@
 Thread 2
-Lower Bound: 2500
-Upper Bound: 3750
+Lower Bound: 10926
+Upper Bound: 16387
 

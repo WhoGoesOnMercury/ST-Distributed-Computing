@@ -1,4 +1,4 @@
 Thread 7
-Lower Bound: 8750
-Upper Bound: 10000
+Lower Bound: 38231
+Upper Bound: 43692
 

@@ -1,4 +1,4 @@
 Thread 6
-Lower Bound: 7500
-Upper Bound: 8750
+Lower Bound: 32770
+Upper Bound: 38231
 

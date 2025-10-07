@@ -1,4 +1,4 @@
 Thread 3
-Lower Bound: 3750
-Upper Bound: 5000
+Lower Bound: 16387
+Upper Bound: 21848
 

@@ -23,9 +23,13 @@ typedef struct INSTANCE {
     bool        is_party_complete;
     int         time_min;
     int         time_max;
-    int         *player_ids;
-
+    int         party_id;
 } INSTANCE;
+
+typedef struct PARTY {
+    int         party_id;
+    int         player_ids[5];
+} PARTY;
 
 typedef struct PLAYER {
     int         player_id;

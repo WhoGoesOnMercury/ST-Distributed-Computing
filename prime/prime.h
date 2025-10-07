@@ -21,7 +21,7 @@ typedef struct PRIME_THREAD {
     uint64_t    upper_bound;
 } PRIME_THREAD;
 
-typedef struct {
+typedef struct DIV_THREAD {
     uint64_t num;
     uint64_t start;
     uint64_t end;

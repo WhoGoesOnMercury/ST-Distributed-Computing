@@ -1,4 +1,4 @@
 Thread 5
-Lower Bound: 6250
-Upper Bound: 7500
+Lower Bound: 27309
+Upper Bound: 32770
 
